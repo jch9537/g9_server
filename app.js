@@ -1,11 +1,12 @@
 const express = require("express");
 const app = express();
 const port = 8000;
+
 const cors = require("cors");
-// const util = require("./util");
-// const crawling = require("./crawling");
 const axios = require("axios");
 const cheerio = require("cheerio");
+
+// const crawling = require("./crawling");
 
 app.use(cors());
 app.use(express.json());
@@ -22,34 +23,30 @@ app.route("/naver/realtime").get((req, res) => {
     }
   }
 
-  getHTML().then(function (html) {
-    // console.log(html);
-    const titleList = [];
-    const $ = cheerio.load(html.data);
-    // console.log("html---", $("div#NM_FAVORITE #rtk .keyword_area").html());
-    console.log("html---", $("div.list_group ul li").html());
-    var searchList = $("div.list_group ul li");
-    searchList.each(function (i, e) {
-      var rangking = $(e).children("div").children("span.item_num").text();
-      var title = $(e)
-        .children("div")
-        .children("span")
-        .children("span.item_title")
-        .text();
-      console.log("타이틀", rangking, title);
-    });
-    console.log("타이틀리스트", titleList);
-    // return titleList;
-  });
-  // .then((res) => console.log(res));
-
-  res.send("1");
+  getHTML()
+    .then(function (html) {
+      // console.log(html);
+      const titleList = [];
+      const $ = cheerio.load(html.data);
+      // console.log("html---", $("div#NM_FAVORITE #rtk .keyword_area").html());
+      console.log("html---", $("div.list_group ul li").html());
+      const searchList = $("div.list_group ul li");
+      searchList.each(function (i, e) {
+        const data = {};
+        const rangking = $(e).children("div").children("span.item_num").text();
+        const title = $(e)
+          .children("div")
+          .children("span")
+          .children("span.item_title")
+          .text();
+        data[rangking] = title;
+        titleList.push(data);
+        console.log("타이틀", rangking, title);
+      });
+      console.log("타이틀리스트", titleList);
+      return titleList;
+    })
+    .then((data) => res.status(200).send(data));
 });
-//   .post((req, res) => {
-//     console.log(req.body);
-//     util.checkIdNumber(req.body.id);
-//     res.send("2");
-//   });
-//    util.checkIdNumber(req.body)
 
 app.listen(port, () => console.log(`app listening on ${port}`));
