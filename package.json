@@ -1,0 +1,28 @@
+{
+  "name": "g9_server",
+  "version": "1.0.0",
+  "description": "g9 test server",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jch9537/g9_server.git"
+  },
+  "author": "jungchihoon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jch9537/g9_server/issues"
+  },
+  "homepage": "https://github.com/jch9537/g9_server#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "cheerio": "^1.0.0-rc.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  }
+}
