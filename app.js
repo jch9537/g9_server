@@ -1,52 +1,48 @@
+const port = 8000;
 const express = require("express");
 const app = express();
-const port = 8000;
-
 const cors = require("cors");
-const axios = require("axios");
-const cheerio = require("cheerio");
 
-// const crawling = require("./crawling");
+const crawling = require("./crawling");
+const checkID = require("./checkID");
 
 app.use(cors());
 app.use(express.json());
 
-app.route("/naver/realtime").get((req, res) => {
-  console.log("겟");
-  async function getHTML() {
-    try {
-      return await axios.get(
-        "https://datalab.naver.com/keyword/realtimeList.naver"
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  getHTML()
-    .then(function (html) {
-      // console.log(html);
-      const titleList = [];
-      const $ = cheerio.load(html.data);
-      // console.log("html---", $("div#NM_FAVORITE #rtk .keyword_area").html());
-      console.log("html---", $("div.list_group ul li").html());
-      const searchList = $("div.list_group ul li");
-      searchList.each(function (i, e) {
-        const data = {};
-        const rangking = $(e).children("div").children("span.item_num").text();
-        const title = $(e)
-          .children("div")
-          .children("span")
-          .children("span.item_title")
-          .text();
-        data[rangking] = title;
-        titleList.push(data);
-        console.log("타이틀", rangking, title);
+app
+  .route("/naver/realtime")
+  .get((req, res) => {
+    // console.log("^^^^^^^^^^^^^^^^^^^", req.params);
+    if (!checkID.checkIdNumber(req.params.id)) {
+      return res.status(400).send({
+        error: { status: 400, message: "유효한 주민번호가 아닙니다." },
       });
-      console.log("타이틀리스트", titleList);
-      return titleList;
-    })
-    .then((data) => res.status(200).send(data));
-});
+    }
+    return crawling
+      .parseHTML()
+      .then((data) =>
+        res.status(200).send({ data: data, message: "가져오기 완료" })
+      )
+      .catch((error) => {
+        res.status(500).send({ error: { status: 500, message: "서버오류" } });
+      });
+  })
+  .post((req, res) => {
+    // console.log("^^^^^^^^^^^^^^^^^^^", req.body);
+    if (!checkID.checkIdNumber(req.body.id)) {
+      return res.status(400).send({
+        error: { status: 400, message: "유효한 주민번호가 아닙니다." },
+      });
+    }
+    return crawling
+      .parseHTML()
+      .then((data) => {
+        console.log(data);
+        res.status(200).send({ data: data, message: "가져오기 완료" });
+      })
+      .catch((error) => {
+        res.status(500).send({ error: { status: 500, message: "서버오류" } });
+      });
+  });
 
-app.listen(port, () => console.log(`app listening on ${port}`));
+app.listen(port, () => console.log(`App listening on ${port}`));
