@@ -1,6 +1,6 @@
 module.exports = {
   //주민번호 유효성확인
-  checkIdNumber: (serialNumber) => {
+  validateIdNumber: (serialNumber) => {
     if (serialNumber.length !== 13) {
       return false;
     }
@@ -11,8 +11,8 @@ module.exports = {
       sum += numbers[i] * checkArray[i];
     }
     let extraNumber = sum % 11;
-    let lastNumber = (11 - extraNumber) % 10;
-    if (Number(numbers[numbers.length - 1]) === lastNumber) {
+    let finalNumber = (11 - extraNumber) % 10;
+    if (Number(numbers[numbers.length - 1]) === finalNumber) {
       return true;
     } else {
       return false;
