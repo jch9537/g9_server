@@ -2,8 +2,11 @@
 
 ### 테스트 과제 서버
 
+-> 서버는 배포상태가 아니므로 clone받아서 local에서 구동됩니다.<br/>
+
 주민번호 유효성 확인 후 네이버 실시간 검색어 추출<br/>
-사용 언어 : javascript<br/>
+사용 언어 : Javascript<br/>
+사용 환경 : Node.js<br/>
 사용 프레임워크/라이브러리 : express, cors, axios, cheerio<br/>
 
 1. Client에 API제공
