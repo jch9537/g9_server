@@ -14,7 +14,7 @@
 3. 네이버 실시간 검색어 HTML 가져오기 : crawling.js (getHTML)
 4. 가져온 HTML 분석후 키워드 응답 : crawling.js (parseHTML)
 
-- Server URI : http://ec2-18-221-37-6.us-east-2.compute.amazonaws.com:3000
+- Server URI : http://ec2-13-59-133-179.us-east-2.compute.amazonaws.com:3000
 - Endpoint : /naver/realtime
 - Resource : IdNumber
 - Method : POST
